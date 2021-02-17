@@ -1,1 +1,4 @@
 src/venv
+src/secret_config.conf
+src/client_secret.json
+pewdiepie_video_subs.txt
