@@ -1,9 +1,13 @@
 from YoutubeModel import YoutubeModel
 
 if __name__ == "__main__":
-    yt = YoutubeModel()
+    video_url = 'https://www.youtube.com/watch?v=lIFE7h3m40U'
+    yt = YouTube(video_url)
 
-    caption = yt.get_caption("lIFE7h3m40U", "en")
+    yt.captions
+    # yt = YoutubeModel()
 
-    print(caption)
-    print(type(caption))
+    # caption = yt.get_caption("lIFE7h3m40U", "en")
+
+    # print(caption)
+    # print(type(caption))

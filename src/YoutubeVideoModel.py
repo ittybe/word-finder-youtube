@@ -4,13 +4,16 @@ that need to get information from Youtube service
 
 This model represents youtube video
 """
-
+import logging
+import types
 from pytube import YouTube
+
+logger = logging.getLogger(__name__)
 
 class YoutubeVideoModel:
     def __init__(self, video_id :str):
         """
-            args:
+            :params:
                 video_id: str, only id no url 
         """
         self.video_id = video_id
@@ -22,6 +25,36 @@ class YoutubeVideoModel:
 
     def get_caption(self, lang_code):
         pass
+
+    def get_caption_user_comparison(self, comparison :types.FunctionType) -> list:
+        """[summary]
+        going through all available captions on video and make comparison with language
+
+        Args:
+            comparison (function):         
+                comparison is a function that takes one param "lambda x: <some comparison>", 
+                this param is language code of caption
+                function has to return true or false value, 
+                if it returns true then caption matches your language preference, otherwise it s not
+
+        Returns:
+            list: list of captions that maches your request (in string xml format)
+        """
+        # get all captions
+        caps = self.yt_obj.captions.keys()
+
+        result = []
+        
+        # iterate throught all captions
+        for cap in caps:
+            
+            # compare with comparison func 
+            if (comparison(cap.code)):
+
+                # add matched caption into result list
+                result.append(cap)
+        
+        return result
 
     def get_available_languages_of_captions(self) -> list:
         """
@@ -58,10 +91,15 @@ class YoutubeVideoModel:
 
     
 if __name__ == "__main__":
-    video = YoutubeVideoModel("RGuJga2Gl_k")
+    video = YoutubeVideoModel("aoy_WJ3mE50")
     captions_languages = video.get_available_languages_of_captions()
-    print(captions_languages)
 
+    print(captions_languages)
+    input("press any key")
+    list_of_caps = video.get_caption_user_comparison(lambda lang_code: True if "en" in lang_code else False)
+
+    print(list_of_caps)
+    print(len(list_of_caps))
 
     
 
